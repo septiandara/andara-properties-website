@@ -64,55 +64,134 @@
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 22px 60px;
+      background: rgba(26, 22, 16, 0.95);
       transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
     }
 
     nav.scrolled {
-      background: rgba(26, 22, 16, 0.97);
+      background: rgba(26, 22, 16, 0.99);
       padding: 14px 60px;
       box-shadow: 0 2px 30px rgba(0,0,0,0.3);
     }
 
-    .nav-logo img {
-      height: 44px;
-      width: auto;
-      filter: brightness(0) invert(1);
+    .nav-logo {
+      position: relative;
+      z-index: 101;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: rgba(196, 164, 74, 0.9);
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .nav-links {
+    .hamburger {
       display: flex;
-      gap: 40px;
-      list-style: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 4px;
+      z-index: 1001;
     }
 
-    .nav-links a {
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: rgba(196, 164, 74, 0.9);
+      transition: 0.3s;
+      transform-origin: center;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 280px;
+      height: 100vh;
+      background: var(--dark);
+      padding: 100px 40px 40px;
+      transition: right 0.3s ease;
+      z-index: 999;
+      box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+    }
+
+    .nav-menu.active {
+      right: 0;
+    }
+
+    .nav-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-menu li {
+      margin-bottom: 30px;
+    }
+
+    .nav-menu a {
       text-decoration: none;
       color: rgba(255,255,255,0.85);
-      font-size: 11px;
+      font-size: 16px;
       font-weight: 500;
-      letter-spacing: 2.5px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       transition: color 0.3s;
+      display: block;
+      padding: 10px 0;
     }
 
-    .nav-links a:hover { color: var(--gold-lt); }
+    .nav-menu a:hover,
+    .nav-menu .nav-cta {
+      color: var(--gold-lt);
+    }
 
-    .nav-cta {
-      background: transparent;
+    .nav-menu .nav-cta {
       border: 1px solid var(--gold-lt);
-      color: var(--gold-lt) !important;
-      padding: 10px 24px;
-      transition: background 0.3s, color 0.3s !important;
+      padding: 12px 24px;
+      text-align: center;
+      margin-top: 40px;
+      transition: background 0.3s, color 0.3s;
     }
 
-    .nav-cta:hover {
-      background: var(--gold-lt) !important;
-      color: var(--dark) !important;
+    .nav-menu .nav-cta:hover {
+      background: var(--gold-lt);
+      color: var(--dark);
+    }
+
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+      z-index: 998;
+    }
+
+    .nav-overlay.active {
+      opacity: 1;
+      visibility: visible;
     }
 
     /* ─── Hero ─────────────────────────────────────────────────── */
@@ -382,6 +461,8 @@
       grid-template-columns: 1fr 1fr;
       gap: 60px;
       align-items: end;
+      position: relative;
+      z-index: 2;
     }
 
     .services-header h2 {
@@ -476,19 +557,6 @@
       overflow: hidden;
     }
 
-    #why::before {
-      content: 'ANDARA';
-      position: absolute;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 220px;
-      color: rgba(255,255,255,0.025);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
     .why-inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -499,6 +567,8 @@
     .why-header {
       text-align: center;
       margin-bottom: 80px;
+      position: relative;
+      z-index: 2;
     }
 
     .why-header .section-label { color: var(--gold-lt); }
@@ -835,7 +905,7 @@
 
     /* ─── Footer ───────────────────────────────────────────────── */
     footer {
-      background: #0F0D09;
+      background: var(--dark);
       padding: 50px 60px;
       display: flex;
       align-items: center;
@@ -847,6 +917,10 @@
     footer img {
       height: 32px;
       filter: brightness(0) invert(1) opacity(0.4);
+    }
+
+    footer span {
+      flex-shrink: 0;
     }
 
     footer p {
@@ -904,17 +978,23 @@
 
   <!-- ── Navigation ──────────────────────────────────────────── -->
   <nav id="navbar">
-    <a href="#hero" class="nav-logo">
-      <img src="andara-logo.png" alt="Andara Properties" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"/>
-      <span style="display:none; font-family:'Cormorant Garamond',serif; font-size:22px; color:#C4A44A; letter-spacing:4px;">ANDARA</span>
-    </a>
-    <ul class="nav-links">
+    <a href="#hero" class="nav-logo">ANDARA</a>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="nav-menu" id="navMenu">
+    <ul>
       <li><a href="#services">Services</a></li>
       <li><a href="#why">Why Andara</a></li>
       <li><a href="#process">Our Process</a></li>
       <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
     </ul>
-  </nav>
+  </div>
 
   <!-- ── Hero ────────────────────────────────────────────────── -->
   <section id="hero">
@@ -1246,8 +1326,7 @@
 
   <!-- ── Footer ───────────────────────────────────────────────── -->
   <footer>
-    <img src="andara-logo.png" alt="Andara Properties" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" />
-    <span style="display:none; font-family:'Cormorant Garamond',serif; font-size:16px; color:rgba(196,164,74,0.4); letter-spacing:4px;">ANDARA</span>
+    <span style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; letter-spacing: 2px; color: rgba(196,164,74,0.4);">ANDARA</span>
     <p>© 2025 Andara Properties. All rights reserved. Bali, Indonesia.</p>
     <nav class="footer-links">
       <a href="#services">Services</a>
@@ -1261,6 +1340,32 @@
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    const navOverlay = document.getElementById('navOverlay');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+      navOverlay.classList.toggle('active');
+    });
+
+    navOverlay.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navMenu.classList.remove('active');
+      navOverlay.classList.remove('active');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        navOverlay.classList.remove('active');
+      });
     });
 
     // Reveal on scroll
