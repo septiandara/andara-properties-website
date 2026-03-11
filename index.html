@@ -61,7 +61,70 @@
     }
 
     /* ─── Navigation ───────────────────────────────────────────── */
-    nav { display: none; }
+    #main-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 60px;
+      transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
+    }
+
+    #main-nav.scrolled {
+      background: rgba(26,22,16,0.96);
+      padding: 16px 60px;
+      box-shadow: 0 1px 0 rgba(196,164,74,0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: rgba(196,164,74,0.95);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold-lt); }
+
+    .nav-cta {
+      display: inline-block;
+      border: 1px solid rgba(196,164,74,0.5);
+      color: var(--gold-lt) !important;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      transition: background 0.3s, border-color 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      background: rgba(196,164,74,0.12) !important;
+      border-color: var(--gold-lt) !important;
+    }
 
     /* ─── Hero ─────────────────────────────────────────────────── */
     #hero {
@@ -827,8 +890,9 @@
 
     /* ─── Responsive ───────────────────────────────────────────── */
     @media (max-width: 1024px) {
-      nav { padding: 20px 36px; }
-      nav.scrolled { padding: 14px 36px; }
+      #main-nav { padding: 20px 36px; }
+      #main-nav.scrolled { padding: 14px 36px; }
+      .nav-links { gap: 24px; }
       #intro, .contact-inner { grid-template-columns: 1fr; gap: 60px; }
       .intro-image { display: none; }
       .services-header { grid-template-columns: 1fr; }
@@ -841,7 +905,7 @@
     }
 
     @media (max-width: 680px) {
-      nav { padding: 18px 24px; }
+      #main-nav { padding: 18px 24px; }
       .nav-links { display: none; }
       .services-grid { grid-template-columns: 1fr; }
       .why-grid { grid-template-columns: 1fr; }
@@ -857,6 +921,17 @@
 <body>
 
 
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav id="main-nav">
+    <a href="#hero" class="nav-logo">Andara</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Why Andara</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+    </ul>
+  </nav>
 
   <!-- ── Hero ────────────────────────────────────────────────── -->
   <section id="hero">
@@ -1189,6 +1264,12 @@
   </footer>
 
   <script>
+    // Nav scroll effect
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
     // Reveal on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
